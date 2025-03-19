@@ -1,0 +1,2 @@
+DROP INDEX IF EXISTS unique_song;
+DROP TABLE IF EXISTS songs;
