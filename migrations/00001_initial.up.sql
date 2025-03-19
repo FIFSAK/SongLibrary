@@ -1,4 +1,4 @@
-CREATE TABLE songs
+CREATE TABLE IF NOT EXISTS songs
 (
     id           SERIAL PRIMARY KEY,
     group_name   TEXT NOT NULL,
@@ -10,4 +10,7 @@ CREATE TABLE songs
     updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX unique_song ON songs (group_name, song_name);
+CREATE UNIQUE INDEX IF NOT EXISTS unique_song ON songs (group_name, song_name);
+
+select * from songs
+limit 3 offset 4;

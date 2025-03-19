@@ -2,6 +2,7 @@ package models
 
 import (
 	"SongLibrary/pkg/logger"
+	"fmt"
 	"gorm.io/gorm"
 	"strings"
 	"time"
@@ -90,7 +91,8 @@ func GetSongVerses(db *gorm.DB, id uint, page, limit int) ([]string, error) {
 		return nil, err
 	}
 
-	verses := strings.Split(song.Text, "\n\n")
+	verses := strings.Split(song.Text, `\n\n`)
+	fmt.Println(verses)
 	totalVerses := len(verses)
 	logger.Log.Debugf("Song ID %d has %d verses", id, totalVerses)
 
