@@ -11,6 +11,3 @@ CREATE TABLE IF NOT EXISTS songs
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS unique_song ON songs (group_name, song_name);
-
-select * from songs
-limit 3 offset 4;
