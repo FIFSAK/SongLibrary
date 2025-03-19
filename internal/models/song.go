@@ -9,14 +9,14 @@ import (
 )
 
 type Song struct {
-	ID          uint      `gorm:"primaryKey"`
-	GroupName   string    `gorm:"not null"`
-	SongName    string    `gorm:"not null"`
-	ReleaseDate time.Time `gorm:"not null"`
-	Text        string    `gorm:"not null"`
-	Link        string    `gorm:"not null"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID          uint      `gorm:"primaryKey" json:"id"`
+	GroupName   string    `gorm:"not null" json:"group_name"`
+	SongName    string    `gorm:"not null" json:"song_name"`
+	ReleaseDate time.Time `gorm:"not null" json:"release_date"`
+	Text        string    `gorm:"not null" json:"text"`
+	Link        string    `gorm:"not null" json:"link"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 type SongFilter struct {
@@ -30,8 +30,16 @@ type SongFilter struct {
 }
 
 type CreateSongInput struct {
-	Group string `json:"group" binding:"required" example:"Muse"`
-	Song  string `json:"song" binding:"required" example:"Supermassive Black Hole"`
+	Group string `json:"group" binding:"required" example:"Test Group"`
+	Song  string `json:"song" binding:"required" example:"Test Song"`
+}
+
+type UpdateSongInput struct {
+	GroupName   string `json:"group_name" example:"Test Group"`
+	SongName    string `json:"song_name" example:"Test Song"`
+	ReleaseDate string `json:"release_date" example:"2006-06-19"`
+	Text        string `json:"text" example:"Test lyrics"`
+	Link        string `json:"link" example:"https://www.example.com"`
 }
 
 func GetSongs(db *gorm.DB, filter SongFilter) ([]Song, error) {
@@ -144,7 +152,7 @@ func UpdateSong(db *gorm.DB, updatedSong Song) error {
 
 	existing.GroupName = updatedSong.GroupName
 	existing.SongName = updatedSong.SongName
-	//existing.ReleaseDate = updatedSong.ReleaseDate
+	existing.ReleaseDate = updatedSong.ReleaseDate
 	existing.Text = updatedSong.Text
 	existing.Link = updatedSong.Link
 

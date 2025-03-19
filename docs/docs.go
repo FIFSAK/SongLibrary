@@ -174,7 +174,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Song"
+                            "$ref": "#/definitions/models.UpdateSongInput"
                         }
                     }
                 ],
@@ -308,21 +308,21 @@ const docTemplate = `{
             "properties": {
                 "group": {
                     "type": "string",
-                    "example": "Muse"
+                    "example": "Test Group"
                 },
                 "song": {
                     "type": "string",
-                    "example": "Supermassive Black Hole"
+                    "example": "Test Song"
                 }
             }
         },
         "models.Song": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "created_at": {
                     "type": "string"
                 },
-                "groupName": {
+                "group_name": {
                     "type": "string"
                 },
                 "id": {
@@ -331,17 +331,42 @@ const docTemplate = `{
                 "link": {
                     "type": "string"
                 },
-                "releaseDate": {
+                "release_date": {
                     "type": "string"
                 },
-                "songName": {
+                "song_name": {
                     "type": "string"
                 },
                 "text": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "type": "string"
+                }
+            }
+        },
+        "models.UpdateSongInput": {
+            "type": "object",
+            "properties": {
+                "group_name": {
+                    "type": "string",
+                    "example": "Test Group"
+                },
+                "link": {
+                    "type": "string",
+                    "example": "https://www.example.com"
+                },
+                "release_date": {
+                    "type": "string",
+                    "example": "2006-06-19"
+                },
+                "song_name": {
+                    "type": "string",
+                    "example": "Test Song"
+                },
+                "text": {
+                    "type": "string",
+                    "example": "Test lyrics"
                 }
             }
         }

@@ -75,9 +75,10 @@ func GetSongsHandler(db *gorm.DB) gin.HandlerFunc {
 		releaseDateStr := c.Query("releaseDate")
 		var releaseDate time.Time
 		if releaseDateStr != "" {
-			parsedDate, err := time.Parse("2006-01-02", releaseDateStr)
+			parsedDate, err := parseDateFlexible(releaseDateStr)
 			if err != nil {
 				logger.Log.WithError(err).Debug("Invalid releaseDate format")
+				c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid releaseDate format"})
 			} else {
 				releaseDate = parsedDate
 			}
@@ -219,7 +220,7 @@ func CreateSongHandler(db *gorm.DB) gin.HandlerFunc {
 
 		logger.Log.Debugf("External API data: %+v", externalData)
 
-		releaseDate, err := time.Parse("02.01.2006", externalData.ReleaseDate)
+		releaseDate, err := parseDateFlexible(externalData.ReleaseDate)
 		if err != nil {
 			logger.Log.WithError(err).Error("Invalid date format from external API")
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid date format from external API"})
@@ -252,7 +253,7 @@ func CreateSongHandler(db *gorm.DB) gin.HandlerFunc {
 // @Accept       json
 // @Produce      json
 // @Param        id    path   int            true  "Song ID"
-// @Param        song  body   models.Song    true  "Updated song object"
+// @Param        song  body   models.UpdateSongInput    true  "Updated song object"
 // @Success      200   {object}  models.Song
 // @Failure      400   {object}  map[string]interface{}
 // @Failure      500   {object}  map[string]interface{}
@@ -269,15 +270,31 @@ func UpdateSongHandler(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		var song models.Song
-		if err = c.ShouldBindJSON(&song); err != nil {
+		var updateSong models.UpdateSongInput
+		if err = c.ShouldBindJSON(&updateSong); err != nil {
 			logger.Log.WithError(err).Debug("Invalid JSON input")
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		song.ID = uint(id)
-		logger.Log.Debugf("Updating song with ID %d: %+v", id, song)
+		ID := uint(id)
+		parsedDate, err := parseDateFlexible(updateSong.ReleaseDate)
+		if err != nil {
+			logger.Log.WithError(err).Debug("Invalid date format")
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid date format"})
+			return
+		}
+
+		logger.Log.Debugf("Updating song with ID %d: %+v", id, updateSong)
+
+		song := models.Song{
+			ID:          ID,
+			GroupName:   updateSong.GroupName,
+			SongName:    updateSong.SongName,
+			ReleaseDate: parsedDate,
+			Text:        updateSong.Text,
+			Link:        updateSong.Link,
+		}
 
 		if err = models.UpdateSong(db, song); err != nil {
 			logger.Log.WithError(err).Errorf("Failed to update song ID %d", id)
@@ -323,4 +340,17 @@ func DeleteSongHandler(db *gorm.DB) gin.HandlerFunc {
 		logger.Log.Infof("Song deleted successfully: ID %d", id)
 		c.JSON(http.StatusOK, gin.H{"message": "Song deleted"})
 	}
+}
+
+func parseDateFlexible(dateStr string) (time.Time, error) {
+	formats := []string{"2006.01.02", "2006-01-02", time.RFC3339}
+	var err error
+	for _, layout := range formats {
+		var t time.Time
+		t, err = time.Parse(layout, dateStr)
+		if err == nil {
+			return t, nil
+		}
+	}
+	return time.Time{}, fmt.Errorf("unsupported date format: %s", dateStr)
 }

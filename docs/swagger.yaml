@@ -3,10 +3,10 @@ definitions:
   models.CreateSongInput:
     properties:
       group:
-        example: Muse
+        example: Test Group
         type: string
       song:
-        example: Supermassive Black Hole
+        example: Test Song
         type: string
     required:
     - group
@@ -14,21 +14,39 @@ definitions:
     type: object
   models.Song:
     properties:
-      createdAt:
+      created_at:
         type: string
-      groupName:
+      group_name:
         type: string
       id:
         type: integer
       link:
         type: string
-      releaseDate:
+      release_date:
         type: string
-      songName:
+      song_name:
         type: string
       text:
         type: string
-      updatedAt:
+      updated_at:
+        type: string
+    type: object
+  models.UpdateSongInput:
+    properties:
+      group_name:
+        example: Test Group
+        type: string
+      link:
+        example: https://www.example.com
+        type: string
+      release_date:
+        example: "2006-06-19"
+        type: string
+      song_name:
+        example: Test Song
+        type: string
+      text:
+        example: Test lyrics
         type: string
     type: object
 host: localhost:8080
@@ -172,7 +190,7 @@ paths:
         name: song
         required: true
         schema:
-          $ref: '#/definitions/models.Song'
+          $ref: '#/definitions/models.UpdateSongInput'
       produces:
       - application/json
       responses:
