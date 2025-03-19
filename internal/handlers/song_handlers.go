@@ -4,6 +4,7 @@ import (
 	"SongLibrary/pkg/logger"
 	"encoding/json"
 	"fmt"
+	"github.com/joho/godotenv"
 	"gorm.io/gorm"
 	"net/http"
 	"net/url"
@@ -15,7 +16,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var ExternalAPIURL = os.Getenv("EXTERNAL_API_URL")
+var ExternalAPIURL = "http://localhost:8081"
+
+func init() {
+	if err := godotenv.Load(); err != nil {
+		logger.Log.Fatal("Error loading .env file")
+	}
+
+	if apiUrl := os.Getenv("EXTERNAL_API_URL"); apiUrl != "" {
+		ExternalAPIURL = apiUrl
+	}
+}
 
 // GetSongsHandler godoc
 // @Summary      Get songs
@@ -223,7 +234,7 @@ func CreateSongHandler(db *gorm.DB) gin.HandlerFunc {
 			Link:        externalData.Link,
 		}
 
-		if err = models.CreateSong(db, newSong); err != nil {
+		if err = models.CreateSong(db, &newSong); err != nil {
 			logger.Log.WithError(err).Error("Failed to save song in database")
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

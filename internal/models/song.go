@@ -119,7 +119,7 @@ func GetSongVerses(db *gorm.DB, id uint, page, limit int) ([]string, error) {
 	return selectedVerses, nil
 }
 
-func CreateSong(db *gorm.DB, song Song) error {
+func CreateSong(db *gorm.DB, song *Song) error {
 	logger.Log.Infof("Creating song: Group=%s, Song=%s", song.GroupName, song.SongName)
 
 	err := db.Create(&song).Error
@@ -144,7 +144,7 @@ func UpdateSong(db *gorm.DB, updatedSong Song) error {
 
 	existing.GroupName = updatedSong.GroupName
 	existing.SongName = updatedSong.SongName
-	existing.ReleaseDate = updatedSong.ReleaseDate
+	//existing.ReleaseDate = updatedSong.ReleaseDate
 	existing.Text = updatedSong.Text
 	existing.Link = updatedSong.Link
 
