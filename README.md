@@ -29,7 +29,7 @@ stores it in a PostgreSQL database. Features include filtering, pagination, vers
 
 ---
 
-## 🐳 Docker Setup
+## Docker Setup
 
 ### 1. Environment Variables
 
@@ -80,7 +80,7 @@ swag init --generalInfo cmd/main.go
 
 ---
 
-## 🛠️ API Endpoints
+## API Endpoints
 
 ### `GET /songs`
 
