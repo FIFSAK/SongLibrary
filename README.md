@@ -185,7 +185,7 @@ Accessible at: `http://localhost:8080/swagger/index.html`
 
 ---
 
-## 🗑Clean Up
+## Clean Up
 
 To remove all Docker containers, images, and volumes:
 
