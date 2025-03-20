@@ -33,7 +33,9 @@ stores it in a PostgreSQL database. Features include filtering, pagination, vers
 
 ### 1. Environment Variables
 
-Create a `.env` file in the project root and configure it like [.env.example](.env.example):
+Create a `.env` file in the project root and configure it like [.env.example](.env.example) and external API URL [here](https://github.com/FIFSAK/SongLibrary/blob/master/internal/handlers/song_handlers.go#L19).
+
+```bash:
 
 ### 2. Build & Run via Makefile
 

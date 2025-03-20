@@ -4,11 +4,9 @@ import (
 	"SongLibrary/pkg/logger"
 	"encoding/json"
 	"fmt"
-	"github.com/joho/godotenv"
 	"gorm.io/gorm"
 	"net/http"
 	"net/url"
-	"os"
 	"strconv"
 	"time"
 
@@ -17,16 +15,6 @@ import (
 )
 
 var ExternalAPIURL = "http://localhost:8081"
-
-func init() {
-	if err := godotenv.Load(); err != nil {
-		logger.Log.Fatal("Error loading .env file")
-	}
-
-	if apiUrl := os.Getenv("EXTERNAL_API_URL"); apiUrl != "" {
-		ExternalAPIURL = apiUrl
-	}
-}
 
 // GetSongsHandler godoc
 // @Summary      Get songs
