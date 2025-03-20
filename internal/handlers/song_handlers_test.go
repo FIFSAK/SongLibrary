@@ -18,7 +18,6 @@ import (
 	"time"
 )
 
-// Создаем тестовую базу
 func setupTestDB(t *testing.T) *gorm.DB {
 	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
 	require.NoError(t, err)
