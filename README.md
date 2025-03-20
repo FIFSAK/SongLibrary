@@ -1,6 +1,6 @@
 # SongLibrary
 
-**SongLibrary** is a RESTful service for managing a music library. It enriches song data using an external API and
+**SongLibrary** is a RESTful service for managing a music library. It enriches song data using an external API ([you can test it by running this code](https://github.com/FIFSAK/SongLibraryExternal)) and
 stores it in a PostgreSQL database. Features include filtering, pagination, verse extraction, and Swagger documentation.
 
 ---
